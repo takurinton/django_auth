@@ -100,11 +100,33 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
+    # DRFを使用するための設定
     'DEFAULT_PARSER_CLASSES': (
         'rest_framework.parsers.FormParser',
         'rest_framework.parsers.MultiPartParser', 
         'rest_framework.parsers.JSONParser',
-     ), 
+    ), 
+
+    # フィルターの設定
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+
+     #  JWTのための設定
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
 }
+
+# トークンの期限を無限に設定
+JWT_AUTH = {
+    'JWT_VERIFY_EXPIRATION': False,
+}
+
+# デフォルトのユーザーモデルではなく自分で定義したものを使うという宣言
+AUTH_USER_MODEL = 'myapp.User'
 
 CORS_ORIGIN_ALLOW_ALL = True
